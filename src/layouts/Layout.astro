@@ -1,0 +1,25 @@
+---
+interface Props {
+	title: string;
+}
+---
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.jsdelivr.net/gh/alpine-collective/alpine-magic-helpers@1.2.x/dist/component.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpine-collective/alpine-magic-helpers@1.2.x/dist/undo.min.js" defer></script>
+     <!-- TITLE -->
+    <title>HTMX Example</title>
+    <link rel="stylesheet" href="/src/styles/global.css">
+    <link rel="stylesheet" href="/src/styles/start.css">
+</head>
+
+<body>
+	<slot></slot>
+</body>
+
+</html>

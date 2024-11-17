@@ -1,0 +1,13 @@
+Recommendations for a Workspace Application
+Given that you're building a workspace application similar to Overleaf, here are some recommendations:
+Session Management:
+Use cookies for session management and authentication tokens. This allows you to securely send session information to the server with each request while taking advantage of cookie security features.
+User Preferences and Temporary Data:
+Use localStorage for storing user preferences, workspace settings, or temporary data that doesn't need to be sent to the server frequently. For example, you might store the current state of an editor or user interface settings.
+Data Synchronization:
+If your application involves collaborative features where multiple users might interact with shared documents or workspaces, consider using localStorage for quick access to state on the client-side while syncing important changes back to the server using API calls.
+Data Expiration Management:
+If you use localStorage for any persistent data that should not last indefinitely (like a temporary cart), implement your own expiration logic by storing timestamps alongside your data and checking them upon retrieval.
+Security Considerations:
+Always sanitize inputs and outputs when using localStorage to prevent XSS vulnerabilities.
+For cookies, ensure you set appropriate flags (HttpOnly, Secure, etc.) based on your application's security needs.

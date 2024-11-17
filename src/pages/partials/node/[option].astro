@@ -1,0 +1,30 @@
+---
+
+// 'export async function getStaticPaths({ paginate }) { /* ... */ }
+
+const params = Astro.url.searchParams;
+const { option } = Astro.params;
+
+if(option === "list"){
+    const id = params.get('children');
+}
+
+const children = generateRandomProducts( Math.random()*1000)
+---
+{
+    children.map((child,idx)=>(
+        <div>
+            child.name
+        </div>
+    ))
+}
+<!-- <script is:inline>
+    Alpine.data('item',()=>{
+        return {
+            register(id){
+                console.log("register-"+id)
+            }
+            test:"hallo"
+        }
+    })
+</script> -->

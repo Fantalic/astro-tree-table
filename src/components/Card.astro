@@ -1,0 +1,39 @@
+---
+interface Props {
+	title: string;
+	body: string;
+	href: string;
+}
+const { href, title, body } = Astro.props;
+
+---
+
+<li class="link-card">
+	<a href={href}>
+		<h2>
+			{title}
+			<span>&rarr;</span>
+		</h2>
+		<p>
+			{body}
+		</p>
+	</a>
+</li>
+<div>
+	<div id="data-container" class="text-white"></div>
+
+    <script>
+        const eventSource = new EventSource('/api/sse');
+
+        eventSource.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            const container = document.getElementById('data-container');
+			if(!container) return
+            container.innerHTML += `<p>Count: ${data.count}</p>`;
+        };
+
+        eventSource.onerror = function() {
+            console.error("EventSource failed.");
+        };
+    </script>
+</div>

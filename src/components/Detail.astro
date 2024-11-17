@@ -1,0 +1,122 @@
+
+---
+// const { nodeitem } = Astro.props;
+// `()=> {nodeitem: ${JSON.stringify(nodeitem) }}`
+---
+<div
+    class="flex flex-col"
+    x-data="()=>context"
+    @tree-on-select.window="onSelect"
+>
+    <div class=" overflow-x-auto ">
+        <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+            <button hx-get="/api/getProducts"
+                    hx-target="#data-container"
+                    hx-trigger="load, click"
+                    @htmx:afterSwap="updateData($event)"
+            >
+                Load Data
+            </button>
+            <table class="min-w-full" id="data-container" >
+                <thead>
+                    <tr>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
+                    </tr>
+                </thead>
+
+                <tbody class="bg-white"  >
+                    <template  x-for="child in nodeitem.children" :key="product.id">
+                        <tr>
+                            <td
+                                class="px-6 py-4 whitespace-no-wrap border-b border-gray-200"
+                            >
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 h-10 w-10">
+                                        <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+                                    </div>
+
+                                    <div class="ml-4">
+                                        <div class="text-sm leading-5 font-medium text-gray-900">Product</div>
+                                        <div class="text-sm leading-5 text-gray-500">
+                                            <p x-text="child.name">
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                <div class="text-sm leading-5 text-gray-900">Software Engineer</div>
+                                <div class="text-sm leading-5 text-gray-500">Web dev</div>
+                            </td>
+
+                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                            </td>
+
+                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-500">Owner</td>
+
+                            <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
+                                <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script is:inline  >import AlpineTest from "./AlpineTest.astro"
+
+    Alpine.morph(el, newHtml, {
+        updating(el, toEl, childrenOnly, skip) {
+            console.log(".....")
+        },
+
+        updated(el, toEl) {
+            console.log(".....")
+        },
+
+        removing(el, skip) {
+            console.log(".....")
+        },
+
+        removed(el) {
+            console.log(".....")
+        },
+
+        adding(el, skip) {
+            console.log(".....")
+        },
+
+        added(el) {
+            console.log(".....")
+        },
+
+        key(el) {
+            // By default Alpine uses the `key=""` HTML attribute.
+            return el.id
+        },
+
+        lookahead: true, // Default: false
+    })
+
+    const context = {
+        noditem: {children:[]}
+    }
+    function onSelect(e){
+        console.log("event ",e )
+        context.noditem = e.detail.selectedNode
+        AlpineTest.nextTick(()=>{
+
+        })
+    }
+    function updateData(data){
+        console.log("RES")
+        console.log(data)
+    }
+
+</script>

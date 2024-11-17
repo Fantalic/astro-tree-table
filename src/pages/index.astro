@@ -1,0 +1,85 @@
+---
+import Table from '../components/Table.astro';
+import Tree from '../components/Tree.astro';
+import TreeNode from '../components/preact/RootNode.tsx';
+import Layout from '../layouts/Layout.astro'
+import { generateRandomProducts } from '../utils';
+
+const cookie = Astro.cookies.get("app-state") || { value: '{}' }
+console.log("COOKIE ?")
+console.log(cookie )
+// const appState = cookie ? JSON.parse(cookie.value) : {}
+
+//TODO: get by cookie info
+const rootNode={
+        id: "1",
+        name: "Root",
+        children: generateRandomProducts(500),
+        desc: ["Root node"],
+        prices: [0],
+    }
+---
+
+<Layout  title="HTMX - ASTRO TEST">
+<main class="text-white bg-gray-800 h-screen w-screen">
+    <ul class="menu" >
+        <li><a hx-get="/dashboard" hx-target="#content">Dashboard</a></li>
+        <li><a hx-get="/workspace" hx-target="#content">Workspace</a></li>
+        <li><a hx-get="/tools" hx-target="#content">Tools</a></li>
+        <li><a hx-get="/settings" hx-target="#content">Settings</a></li>
+    </ul>
+    <div
+        id="content"
+        class="h-full w-full flex"
+        x-init
+        x-data 
+        @on-select-node="(e)=> $store.workspace.selectedNode=e.detail.id"
+    >
+
+        <div
+            style="display:none;width:300px"
+            x-show="$store.workspace.screens[0] === 'tree'"
+        >
+            <p x-text="$store.workspace.selectedNode"></p>
+            <Tree id="root"></Tree>
+        </div>
+        <div
+            style="display:none"
+            x-show="$store.workspace.screens[0] === 'tree'"
+        >
+            <Table id="$store.workspace.selectedNode"> </Table>
+        </div>
+    </div>
+</main>
+</Layout>
+
+<script>
+	import Alpine from 'alpinejs';
+    import morph from '@alpinejs/morph'
+    import { split } from '../integrations/directives/split';
+    import { get } from '../integrations/directives/get';
+
+
+    Alpine.plugin(morph)
+
+    // Initialize store
+	Alpine.store('app', {
+		init() {
+			console.log("init store")
+        }
+    })
+
+    Alpine.store('workspace', {
+        screens:['tree','table'], //'detail'
+        selectedNode:null
+    })
+
+    Alpine.directive('split',split)
+    Alpine.directive('get',get)
+    Alpine.data('context', () => ({
+
+    }))
+
+    const cookie = document.cookie
+        // document.cookie="app-state="+JSON.stringify(data);
+</script>

@@ -1,0 +1,42 @@
+---
+
+// 'export async function getStaticPaths({ paginate }) { /* ... */ }
+import {getFakeDB,getNode} from "../../../fakeDB.ts";
+import {generateRandomProducts} from "../../../utils.ts";
+import Tree from "../../../components/Tree.astro";
+
+const params = Astro.url.searchParams;
+const { option } = Astro.params;
+
+
+let data
+if(option === "list"){
+    const id = params.get('children') ||"";
+    data = getNode(id)
+}
+
+---
+{
+
+     data && data.children.map((child,idx)=>(
+        <div >
+            <Tree id={child.id}></Tree>
+        </div>
+    ))
+}
+{
+    !data && (
+        <div>no more</div>
+    )
+}
+<script is:inline>
+    // Alpine.data('item',()=>{
+    //     return {
+    //         register(id){
+    //             console.log("register-"+id)
+    //         },
+    //         selectedNode:null,
+    //         test:"hallo"
+    //     }
+    // })
+</script>

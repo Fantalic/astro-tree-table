@@ -1,0 +1,62 @@
+---
+import {getNode} from "../fakeDB";
+
+interface Props {
+    id:string
+}
+const { id } = Astro.props;
+
+const node = getNode(id)
+const hasChildren = node && node.children.length > 0
+
+---
+{
+    node && (
+        <li id={"tree-node-"+node.id} x-data="{open: false  }" >
+        <div class="flex">
+            {
+                hasChildren ? (
+                    <p
+                        class="hover:bg-blue-200"
+                        x-on:click="open = !open"
+                        x-text="open ? '-' : '+'"
+                        hx-target={`#children-`+node.id}
+                        hx-ext="alpinhxe-morph"
+                        hx-swap="morph"
+                        hx-get={`/partials/tree/list?children=${node.id}`}
+                        hx-trigger="click"
+                    >
+                    </p>
+                ):(
+                    <p class="hover:bg-blue-200">:</p>
+                )
+            }
+
+            <p
+                class="pl-2 hover:bg-blue-200 hover:text -200"
+                x-on:click={`$dispatch('on-select-node', {id: '${node.id}'})`}
+            >
+                {node.name}
+            </p>
+        </div>
+
+        {
+            node.children.length >0 && (
+                <ul class="ml-8" x-show="open">
+                    <div id={`children-`+node.id}>
+                        loading...
+                    </div>
+                </ul>
+            )
+        }
+
+        </li>
+
+    )
+}
+{
+    !node && (
+        <div> {"<create new node>"} {id}</div>
+    )
+}
+

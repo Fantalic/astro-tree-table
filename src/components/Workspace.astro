@@ -1,0 +1,67 @@
+---
+
+---
+<!-- <div hx-target="this" hx-ext="alpinhxe-morph" -swap="morph">
+    <div x-data="{ count: 0, replaced: false,
+                   message: 'Change me, then press the button!' }">
+        <input type="text" x-model="message">
+        <div x-text="count"></div>
+        <button x-bind:style="replaced && {'backgroundColor': '#fecaca'}"
+                x-on:click="replaced = true; count++"
+                hx-get="/swap">
+          Morph
+        </button>
+    </div>
+</div> -->
+<div
+    class="h-full w-full flex flex-row  "
+    x-init="$nextTick(() => { show=true })"
+    x-data="context"
+    x-split
+>
+    <template x-for="(screen, idx) in $store.workspace.screens">
+        <div
+            id="'splitscreen'+idx"
+            :class="`screen-${idx+1}`"
+        >
+
+            <template x-if="screen==='tree'">
+                <div> TREE HERE</div>
+            </template>
+
+            <!-- <div
+                x-bind:hx-get="'/workspace/'+screen"
+                hx-swap="innerHTML"
+                x-bind:hx-trigger="'load'"
+            >
+                Hallo
+            </div> -->
+
+        </div>
+    </template>
+</div>
+<script  is:inline>
+    function init(){
+        console.log("init data")
+    }
+    Alpine.data("context", () => ({
+        initialized: false,
+        show:false
+    }))
+</script>
+<style>
+    .screen{
+        @apply w-full
+    }
+    .screen-1{
+        @apply screen bg-gradient-to-r from-blue-500 to-indigo-600 text-white
+    }
+    .screen-2{
+        @apply screen bg-gradient-to-t  from-purple-800 to-pink-800 text-white
+    }
+    .screen-3{
+        @apply screen bg-gradient-to-l from-green-500 to-teal-600 text-white
+    }
+
+
+</style>

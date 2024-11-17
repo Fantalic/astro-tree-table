@@ -1,0 +1,92 @@
+<div
+    class="flex flex-col"
+>
+    <div
+        id="table"
+        class="overflow-y-auto "
+        x-data="context"
+        x-init="init()"
+    >
+        <div
+            class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200"
+        >
+            <table class="min-w-full" id="data-container" >
+                <thead>
+                    <tr>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
+                    </tr>
+                </thead>
+                <div
+                    hx-target="#table-content"
+                    hx-ext="alpinhxe-morph"
+                    hx-swap="morph"
+                    x-bind:hx-get="'/table/children?of=1'"
+                    x-bind:hx-trigger="'on-select-node from:body'"
+                    x-bind:@htmx:request-start="()=>{console.log('HALLO ? ')}"
+                    @htmx:response-end="()=>{loading = false}"
+                >
+                </div>
+                <tbody x-show="!loading" id="table-content" class="bg-white"  >
+
+                </tbody>
+            </table>
+            <div x-show="loading"> loading...</div>
+        </div>
+    </div>
+</div>
+<script>
+	import Alpine from 'alpinejs';
+
+    //NOTE: this initializes  alpine directes !
+    //Alpine.initTree
+
+    Alpine.data('context',()=>({
+        loading:false,
+        test:"hallo",
+        init(){
+            this.$el.addEventListener('htmx:beforeRequest',()=>this.$data.loading = true)
+            this.$el.addEventListener('htmx:afterRequest',()=>this.$data.loading = false)
+        }
+    }))
+
+    // how can I change $data here ?
+
+    console.log("TABLE")
+    // Alpine.morph(el, newHtml, {
+    //     updating(el, toEl, childrenOnly, skip) {
+    //         console.log(".....")
+    //     },
+
+    //     updated(el, toEl) {
+    //         console.log(".....")
+    //     },
+
+    //     removing(el, skip) {
+    //         console.log(".....")
+    //     },
+
+    //     removed(el) {
+    //         console.log(".....")
+    //     },
+
+    //     adding(el, skip) {
+    //         console.log(".....")
+    //     },
+
+    //     added(el) {
+    //         console.log(".....")
+    //     },
+
+    //     key(el) {
+    //         // By default Alpine uses the `key=""` HTML attribute.
+    //         return el.id
+    //     },
+
+    //     lookahead: true, // Default: false
+    // })
+
+</script>

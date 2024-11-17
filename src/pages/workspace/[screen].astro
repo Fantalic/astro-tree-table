@@ -1,0 +1,57 @@
+---
+import TreeNode from "../../components/preact/RootNode.tsx";
+import Table from "../../components/Table.astro";
+
+import {generateRandomProducts} from "../../utils.ts";
+
+// export const partial = true;
+
+const { screen } = Astro.params;
+
+const rootNode={
+        id: "1",
+        name: "Root",
+        children: generateRandomProducts(500),
+        desc: ["Root node"],
+        prices: [0],
+    }
+---
+
+<h1>Current Screen: {screen}</h1>
+<p>You are viewing the screen: <strong>{screen}</strong></p>
+
+{
+    screen === 'tree' && (
+        <TreeNode x-show="screen==='tree'" client:load node={rootNode}/>
+    )
+}
+{
+    screen === 'table' && (
+        <div
+            class=" overflow-x-auto "
+            x-data="context"
+            @tree-on-select.window="onSelect"
+        >
+            <div class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+                <table class="min-w-full" id="data-container" >
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
+                        </tr>
+                    </thead>
+
+                    <button
+                        hx-get="/table/children?id=1"
+                    >LOAD</button>
+                    <tbody id="table-content" class="bg-white" >
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    )
+}
