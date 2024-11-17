@@ -1,4 +1,4 @@
-# Astro Tree and Table
+# Astro+HTMX+Alpine Tree and Table
 
 just an Project to explore astro and htmx and alpine. 
 
